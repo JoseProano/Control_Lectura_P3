@@ -457,9 +457,7 @@ Este proyecto demuestra:
 
 ---
 
-## 👥 Autor
+## 👥 Autores
 
-Universidad de las Fuerzas Armadas ESPE  
-Departamento de Ciencias de la Computación  
-Carrera de Software  
-Aplicaciones Distribuidas - 2026
+José Proaño
+Darwin Panchez
