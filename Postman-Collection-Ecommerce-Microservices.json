@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "ecommerce-microservices-collection",
+		"name": "E-commerce Microservices - RabbitMQ",
+		"description": "Colección para probar el sistema de microservicios con Order Service e Inventory Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Order Service",
+			"item": [
+				{
+					"name": "1. Crear Orden (Con Stock Disponible)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a\",\n  \"customerName\": \"Juan Perez\",\n  \"customerEmail\": \"juan.perez@example.com\",\n  \"paymentReference\": \"PAY-2026-001\",\n  \"items\": [\n    {\n      \"productId\": \"a3c2b1d0-6b0e-4f2b-9c1a-2d3f4a5b6c7d\",\n      \"quantity\": 2,\n      \"unitPrice\": 29.99\n    }\n  ],\n  \"shippingAddress\": {\n    \"street\": \"Av Amazonas N34-451\",\n    \"city\": \"Quito\",\n    \"state\": \"Pichincha\",\n    \"postalCode\": \"170515\",\n    \"country\": \"Ecuador\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Crea una orden con un producto que tiene stock disponible (100 unidades). La orden debería pasar a estado CONFIRMED."
+					},
+					"response": []
+				},
+				{
+					"name": "2. Crear Orden (Sin Stock Suficiente)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"e2f3a4b5-c6d7-4e8f-9a0b-1c2d3e4f5a6b\",\n  \"customerName\": \"Maria Lopez\",\n  \"customerEmail\": \"maria.lopez@example.com\",\n  \"paymentReference\": \"PAY-2026-002\",\n  \"items\": [\n    {\n      \"productId\": \"c1d2e3f4-5a6b-7c8d-9e0f-1a2b3c4d5e6f\",\n      \"quantity\": 50,\n      \"unitPrice\": 49.99\n    }\n  ],\n  \"shippingAddress\": {\n    \"street\": \"Calle Garcia Moreno 123\",\n    \"city\": \"Quito\",\n    \"state\": \"Pichincha\",\n    \"postalCode\": \"170150\",\n    \"country\": \"Ecuador\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Crea una orden con cantidad mayor al stock disponible (producto tiene 25, se piden 50). La orden debería pasar a estado CANCELLED."
+					},
+					"response": []
+				},
+				{
+					"name": "3. Crear Orden (Multiple Items)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"f3a4b5c6-d7e8-4f9a-0b1c-2d3e4f5a6b7c\",\n  \"customerName\": \"Carlos Rodriguez\",\n  \"customerEmail\": \"carlos.rodriguez@example.com\",\n  \"paymentReference\": \"PAY-2026-003\",\n  \"items\": [\n    {\n      \"productId\": \"a3c2b1d0-6b0e-4f2b-9c1a-2d3f4a5b6c7d\",\n      \"quantity\": 3,\n      \"unitPrice\": 29.99\n    },\n    {\n      \"productId\": \"b7e8c9d1-2f3a-4b5c-8d9e-1a2b3c4d5e6f\",\n      \"quantity\": 2,\n      \"unitPrice\": 39.99\n    }\n  ],\n  \"shippingAddress\": {\n    \"street\": \"Av 10 de Agosto 2345\",\n    \"city\": \"Quito\",\n    \"state\": \"Pichincha\",\n    \"postalCode\": \"170135\",\n    \"country\": \"Ecuador\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Crea una orden con múltiples productos. Ambos tienen stock suficiente."
+					},
+					"response": []
+				},
+				{
+					"name": "4. Consultar Orden por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/orders/{{orderId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"{{orderId}}"
+							]
+						},
+						"description": "Consulta una orden por su ID (UUID). Reemplaza {{orderId}} con el ID real de una orden creada previamente."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints del servicio de órdenes (Order Service)"
+		},
+		{
+			"name": "Inventory Service",
+			"item": [
+				{
+					"name": "1. Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"health"
+							]
+						},
+						"description": "Verifica que el Inventory Service esté funcionando correctamente"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Consultar Stock Producto 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/products/a3c2b1d0-6b0e-4f2b-9c1a-2d3f4a5b6c7d/stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"a3c2b1d0-6b0e-4f2b-9c1a-2d3f4a5b6c7d",
+								"stock"
+							]
+						},
+						"description": "Consulta el stock del Producto 1 (100 unidades iniciales)"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Consultar Stock Producto 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/products/b7e8c9d1-2f3a-4b5c-8d9e-1a2b3c4d5e6f/stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"b7e8c9d1-2f3a-4b5c-8d9e-1a2b3c4d5e6f",
+								"stock"
+							]
+						},
+						"description": "Consulta el stock del Producto 2 (50 unidades iniciales)"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Consultar Stock Producto 3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/products/c1d2e3f4-5a6b-7c8d-9e0f-1a2b3c4d5e6f/stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"c1d2e3f4-5a6b-7c8d-9e0f-1a2b3c4d5e6f",
+								"stock"
+							]
+						},
+						"description": "Consulta el stock del Producto 3 (25 unidades iniciales)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints del servicio de inventario (Inventory Service)"
+		},
+		{
+			"name": "RabbitMQ Management",
+			"item": [
+				{
+					"name": "Abrir RabbitMQ Management UI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:15673",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "15673"
+						},
+						"description": "Abre el panel de administración de RabbitMQ.\n\nCredenciales:\n- Usuario: admin\n- Contraseña: admin123\n\nAquí puedes ver:\n- Exchanges (ecommerce.events)\n- Queues (order.created, stock.response)\n- Mensajes en tránsito\n- Bindings y routing keys"
+					},
+					"response": []
+				}
+			],
+			"description": "Panel de administración de RabbitMQ"
+		}
+	],
+	"variable": [
+		{
+			"key": "orderId",
+			"value": "REEMPLAZAR-CON-UUID-DE-ORDEN",
+			"type": "string"
+		}
+	]
+}
